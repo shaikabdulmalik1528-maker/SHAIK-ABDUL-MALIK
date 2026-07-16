@@ -1,0 +1,4 @@
+n_estimators,Training Time (seconds),Accuracy,F1 Score
+50,17.5406,0.9897,0.9897
+100,35.0856,0.9888,0.9888
+200,71.9824,0.9893,0.9893

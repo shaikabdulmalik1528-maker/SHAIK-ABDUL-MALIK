@@ -1,0 +1,4 @@
+Algorithm,Training Time (seconds),Accuracy,Precision,Recall,F1 Score
+Decision Tree,5.2232,0.9701,0.9702,0.9701,0.9701
+Random Forest,35.9227,0.9888,0.9888,0.9888,0.9888
+Support Vector Machine,7.1202,0.9853,0.9855,0.9853,0.9853

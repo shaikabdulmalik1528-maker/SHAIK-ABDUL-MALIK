@@ -1,0 +1,14 @@
+{
+    "experiment_id": "experiment_001",
+    "dataset_version": "normalized_landmarks_v1",
+    "feature_version": "mediapipe_normalized_v1",
+    "model": "RandomForestClassifier",
+    "parameters": {
+        "n_estimators": 100,
+        "max_depth": null,
+        "min_samples_leaf": 1,
+        "random_state": 42
+    },
+    "date": "2026-07-15 14:19:47",
+    "engineer": "Abdul Malik"
+}
