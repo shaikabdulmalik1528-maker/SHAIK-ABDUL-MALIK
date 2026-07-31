@@ -1,11 +1,21 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from tutor_service import IntelligentTutorService
+import sys
+from pathlib import Path
 
-app = FastAPI(title="Sign Language Intelligent Tutor API")
+# Ensure the backend directory is in the Python path for relative imports
+sys.path.append(str(Path(__file__).resolve().parent))
 
-# Enable CORS for frontend integration later
+from app.core.exceptions import register_exception_handlers
+from app.routers import assessment_router, analytics_router, recommendation_router
+
+app = FastAPI(
+    title="Sign Language Platform - Production Backend",
+    version="2.0.0",
+    description="Production-Ready Modular Architecture for Intelligent Assessment & Continuous Learning Engine"
+)
+
+# Enable CORS for React Frontend Integration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,46 +24,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-tutor = IntelligentTutorService(db_path="app_data.db")
+# Register Centralized Exception Handlers
+register_exception_handlers(app)
 
-class AssessmentRequest(BaseModel):
-    user_id: str
-    session_id: str
-    target_alphabet: str
-    predicted_alphabet: str
-    confidence_score: float
+# Register Modular Routers with FastAPI
+app.include_router(assessment_router.router)
+app.include_router(analytics_router.router)
+app.include_router(recommendation_router.router)
 
-@app.post("/api/v1/assess")
-def evaluate_gesture(request: AssessmentRequest):
-    """
-    Core End-to-End Workflow:
-    Receives prediction -> Assesses -> Updates Learner Profile -> Returns Feedback & Recommendations.
-    """
-    try:
-        response = tutor.process_prediction_event(
-            user_id=request.user_id,
-            session_id=request.session_id,
-            target=request.target_alphabet,
-            predicted=request.predicted_alphabet,
-            confidence=request.confidence_score
-        )
-        return response
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/v1/recommendations/{user_id}")
-def get_recommendations(user_id: str, limit: int = 5):
-    """Returns prioritized alphabets with explicit learning rationales."""
-    try:
-        return tutor.generate_recommendations(user_id=user_id, limit=limit)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/api/v1/dashboard/{user_id}")
-def get_dashboard(user_id: str):
-    """Returns analytics dashboard data."""
-    try:
-        return tutor.get_analytics_dashboard(user_id=user_id)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+@app.get("/", tags=["Health Check"])
+def health_check():
+    return {
+        "status": "ONLINE",
+        "system": "Sign Language Platform API v2.0.0",
+        "message": "Production Backend Services Running"
+    }
     

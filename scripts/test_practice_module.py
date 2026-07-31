@@ -35,6 +35,7 @@ def test_practice_workflow():
             predicted_alphabet=data["predicted"],
             confidence=data["conf"],
             inference_time_ms=data["time"]
+            
         )
         
         status = "✓ Correct" if res["is_correct"] else "✗ Incorrect"

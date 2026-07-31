@@ -1,17 +1,13 @@
+# backend/app/main.py
 from fastapi import FastAPI
+from app.api import predict, practice
 
-from app.api.health import router as health_router
-from app.api.prediction import router as prediction_router
-from app.api.lessons import router as lessons_router
-from app.api.practice import router as practice_router
-from app.api.session import router as session_router
-from app.api.preprocessing import router as preprocessing_router
+app = FastAPI(title="Sign Language Platform API", version="1.0.0")
 
-app = FastAPI()
+# Include Routers
+app.include_router(predict.router)
+app.include_router(practice.router)
 
-app.include_router(health_router)
-app.include_router(prediction_router)
-app.include_router(lessons_router)
-app.include_router(practice_router)
-app.include_router(session_router)
-app.include_router(preprocessing_router)
+@app.get("/")
+def read_root():
+    return {"message": "Sign Language AI Platform Backend Active"}

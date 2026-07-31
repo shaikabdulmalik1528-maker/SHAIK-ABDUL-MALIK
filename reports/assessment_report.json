@@ -1,0 +1,114 @@
+{
+    "summary": {
+        "total_assessment_attempts": 5,
+        "correct_attempts": 4,
+        "incorrect_attempts": 1,
+        "overall_assessment_score": 80.0,
+        "average_confidence": 0.91,
+        "average_response_time_sec": 2.0,
+        "most_difficult_gestures": [
+            "B"
+        ],
+        "gesture_wise_performance": {
+            "A": {
+                "total": 1.0,
+                "correct": 1.0,
+                "accuracy_percent": 100.0
+            },
+            "B": {
+                "total": 2.0,
+                "correct": 1.0,
+                "accuracy_percent": 50.0
+            },
+            "C": {
+                "total": 1.0,
+                "correct": 1.0,
+                "accuracy_percent": 100.0
+            },
+            "D": {
+                "total": 1.0,
+                "correct": 1.0,
+                "accuracy_percent": 100.0
+            }
+        },
+        "improvement_across_attempts": [
+            {
+                "attempt": 1.0,
+                "cumulative_accuracy": 100.0
+            },
+            {
+                "attempt": 2.0,
+                "cumulative_accuracy": 50.0
+            },
+            {
+                "attempt": 3.0,
+                "cumulative_accuracy": 66.67
+            },
+            {
+                "attempt": 4.0,
+                "cumulative_accuracy": 75.0
+            },
+            {
+                "attempt": 5.0,
+                "cumulative_accuracy": 80.0
+            }
+        ]
+    },
+    "raw_records": [
+        {
+            "attempt_number": 1,
+            "expected_gesture": "A",
+            "predicted_gesture": "A",
+            "is_correct": true,
+            "confidence_score": 0.95,
+            "time_taken_sec": 1.5,
+            "session_accuracy": 100.0,
+            "overall_gesture_accuracy": 100.0,
+            "timestamp": 1784801168.5323596
+        },
+        {
+            "attempt_number": 2,
+            "expected_gesture": "B",
+            "predicted_gesture": "V",
+            "is_correct": false,
+            "confidence_score": 0.82,
+            "time_taken_sec": 3.1,
+            "session_accuracy": 50.0,
+            "overall_gesture_accuracy": 0.0,
+            "timestamp": 1784801168.5344028
+        },
+        {
+            "attempt_number": 3,
+            "expected_gesture": "B",
+            "predicted_gesture": "B",
+            "is_correct": true,
+            "confidence_score": 0.91,
+            "time_taken_sec": 2.0,
+            "session_accuracy": 66.67,
+            "overall_gesture_accuracy": 50.0,
+            "timestamp": 1784801168.5347388
+        },
+        {
+            "attempt_number": 4,
+            "expected_gesture": "C",
+            "predicted_gesture": "C",
+            "is_correct": true,
+            "confidence_score": 0.98,
+            "time_taken_sec": 1.2,
+            "session_accuracy": 75.0,
+            "overall_gesture_accuracy": 100.0,
+            "timestamp": 1784801168.5348964
+        },
+        {
+            "attempt_number": 5,
+            "expected_gesture": "D",
+            "predicted_gesture": "D",
+            "is_correct": true,
+            "confidence_score": 0.89,
+            "time_taken_sec": 2.2,
+            "session_accuracy": 80.0,
+            "overall_gesture_accuracy": 100.0,
+            "timestamp": 1784801168.5351639
+        }
+    ]
+}
