@@ -1,15 +1,49 @@
-from fastapi import APIRouter, status
-import time
-from app.services.tutor_service import UnifiedTutorService
+from typing import List, Any
+from fastapi import APIRouter, Depends, Query
+from pydantic import BaseModel
+from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/api/v1/recommendation", tags=["Recommendation Engine"])
-tutor_service = UnifiedTutorService()
+from app.database.database import get_db
+from app.services.recommendation_service import RecommendationService
 
-@router.get("/{user_id}", status_code=status.HTTP_200_OK)
-async def get_recommendations(user_id: str):
-    recs = tutor_service.get_recommendations(user_id)
-    return {
-        "success": True,
-        "data": recs,
-        "timestamp": time.time()
-    }
+
+# Mock user dependency until auth module is configured
+def get_current_user():
+    class MockUser:
+        id = 1
+        username = "test_user"
+    return MockUser()
+
+
+router = APIRouter(prefix="/recommendations", tags=["Recommendations"])
+
+
+# --- Pydantic Schema ---
+
+class RecommendationItem(BaseModel):
+    alphabet: str
+    current_state: str
+    priority_score: float
+    rolling_accuracy: float
+    days_idle: int
+    reason: str
+
+
+# --- API Route ---
+
+@router.get("/", response_model=List[RecommendationItem])
+def get_recommendations(
+    limit: int = Query(default=5, ge=1, le=26),
+    db: Session = Depends(get_db),
+    current_user: Any = Depends(get_current_user)
+):
+    """
+    Generates state-driven practice recommendations for the learner.
+    Prioritizes items in NEEDS_REVISION, LEARNING, or IMPROVING states.
+    """
+    return RecommendationService.get_recommendations(
+        db=db,
+        user_id=current_user.id,
+        limit=limit
+    )
+    
