@@ -1,4 +1,5 @@
-﻿from fastapi import FastAPI
+﻿from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import (
@@ -22,6 +23,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=500,
+        content={
+            "error_code": "INTERNAL_SERVER_ERROR",
+            "message": "An unexpected error occurred while processing your request.",
+            "details": str(exc)
+        }
+    )
 
 app.include_router(session_router.router)
 app.include_router(analytics_router.router)

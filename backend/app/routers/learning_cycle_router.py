@@ -1,4 +1,4 @@
-﻿from typing import Any, Dict
+﻿from typing import Any
 from pydantic import BaseModel
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
@@ -61,7 +61,6 @@ def process_gesture_attempt_and_adapt(
 ):
     is_correct = 1 if payload.target_alphabet.upper() == payload.predicted_alphabet.upper() else 0
 
-    # Dynamic inspection of SessionService logging methods
     attempt = None
     for method_name in ["record_assessment_attempt", "log_assessment_attempt", "add_assessment_attempt", "record_attempt", "create_assessment_attempt"]:
         if hasattr(SessionService, method_name):
@@ -90,7 +89,6 @@ def process_gesture_attempt_and_adapt(
         db.commit()
         db.refresh(attempt)
 
-    # Dynamic parameter binding for ProgressService
     progress_func = getattr(ProgressService, "update_learner_state", getattr(ProgressService, "update_learner_progress", None))
     
     if progress_func:
@@ -114,7 +112,6 @@ def process_gesture_attempt_and_adapt(
         try:
             updated_state = progress_func(**kw_args)
         except Exception:
-            # Positional fallback matching typical service signatures
             updated_state = progress_func(db, current_user.id, payload.target_alphabet.upper(), is_correct, payload.confidence)
     else:
         updated_state = None
@@ -163,9 +160,6 @@ def end_autonomous_learning_cycle(
                 break
             except TypeError:
                 continue
-
-    if not ended_session:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Session not found")
 
     session_summary = ReportService.generate_session_report(db, session_id=session_id)
 
